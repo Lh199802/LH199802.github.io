@@ -6,15 +6,124 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Hexo</title>
+  <title>jvm | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="一、类加载子系统1.概述 完整图如下：  问：如果自己手写一个java虚拟机的话，主要考虑哪些结构？ 答：类加载器、执行引擎 2.类加载器子系统的作用 类加载器子系统从文件系统或者网络中加载Class文件，class文件在文件开头有特定的文件标识（咖啡宝贝）  ClassLoader只负责class文件的加载，至于它是否可以运行，则由Execution Engine决定。  加载的类信息存放于一块">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jvm">
+<meta property="og:url" content="http://example.com/2023/05/16/jvm/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、类加载子系统1.概述 完整图如下：  问：如果自己手写一个java虚拟机的话，主要考虑哪些结构？ 答：类加载器、执行引擎 2.类加载器子系统的作用 类加载器子系统从文件系统或者网络中加载Class文件，class文件在文件开头有特定的文件标识（咖啡宝贝）  ClassLoader只负责class文件的加载，至于它是否可以运行，则由Execution Engine决定。  加载的类信息存放于一块">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://image.moguit.cn/b44585aa40234738847d4a0e9bfc8b45">
+<meta property="og:image" content="https://image.moguit.cn/dd6fe9fd2c7c4838a243c99381cc4418">
+<meta property="og:image" content="https://image.moguit.cn/4c587acc0d3c42f9b7fa7371c79e103b">
+<meta property="og:image" content="https://image.moguit.cn/e075e5162ec541e4a6b8924a0ee13388">
+<meta property="og:image" content="https://image.moguit.cn/9dac475e180a428f8a3f7a57019b6eda">
+<meta property="og:image" content="https://image.moguit.cn/017f15b7f31940a594f68ec59f91a4be">
+<meta property="og:image" content="http://example.com/2023/AppData/Roaming/Typora/typora-user-images/image-20230506172312598.png">
+<meta property="og:image" content="http://example.com/2023/AppData/Roaming/Typora/typora-user-images/image-20230506213409237.png">
+<meta property="og:image" content="https://image.moguit.cn/e3250d030f004180a3ece1101d5ac8c5">
+<meta property="og:image" content="http://image.moguit.cn/de4fc845051f4c8fa63210563167b332">
+<meta property="og:image" content="http://image.moguit.cn/d62fa5b41c1b4ef2a28f00825c1abd12">
+<meta property="og:image" content="http://example.com/2023/AppData/Roaming/Typora/typora-user-images/image-20230506222849778.png">
+<meta property="og:image" content="https://image.moguit.cn/d7feec9f24e4484cba1c4bba2a390079">
+<meta property="og:image" content="https://image.moguit.cn/fde813264c9149c2bec1aa49a242ea1c">
+<meta property="og:image" content="http://image.moguit.cn/5abce408e6f747b8a454c490177ae925">
+<meta property="og:image" content="http://image.moguit.cn/4d74323dff6d4af5b7f99e3ad104443c">
+<meta property="og:image" content="http://image.moguit.cn/201a70d3f4e34c1c82db5e42f6018382">
+<meta property="og:image" content="http://image.moguit.cn/c83736fe23d34dc698a4ae54c1b576e7">
+<meta property="og:image" content="http://example.com/2023/AppData/Roaming/Typora/typora-user-images/image-20230507160600772.png">
+<meta property="og:image" content="http://image.moguit.cn/2c84aa8259b646cdbf67d34de1e4d527">
+<meta property="og:image" content="https://image.moguit.cn/ee9758bc10e749a18aacf4ee10650a5d">
+<meta property="og:image" content="https://image.moguit.cn/9e893a5bec61478a843ed526e3586b26">
+<meta property="og:image" content="https://image.moguit.cn/b9b09864a1eb4707b4eb6b4639e108ab">
+<meta property="og:image" content="https://image.moguit.cn/9ebaa17389d8453e969ead5b5efc1edf">
+<meta property="og:image" content="https://image.moguit.cn/3cd060c0cb4045b480419ff9fb1650cc">
+<meta property="og:image" content="https://image.moguit.cn/cd55b378914848bcb7dd4ca48d3ee64c">
+<meta property="og:image" content="https://image.moguit.cn/ef8b435d3e0b4eebb0cfc7b785fa41c5">
+<meta property="og:image" content="https://image.moguit.cn/7067465111ef4d23837cbf6b78fd7757">
+<meta property="og:image" content="https://image.moguit.cn/06c7dd9ebefe4f4196536a6bc70bcf37">
+<meta property="og:image" content="https://image.moguit.cn/e8273b43143a4b6e85f609ec127e37c3">
+<meta property="og:image" content="https://image.moguit.cn/4b925d70cd4a421b84ad9442688f7781">
+<meta property="og:image" content="https://image.moguit.cn/abbd65b4735e41de94de91c15f43211e">
+<meta property="og:image" content="https://image.moguit.cn/a1ad1eb6cdea4cc08e79a149cf81463e">
+<meta property="og:image" content="http://example.com/2023/AppData/Roaming/Typora/typora-user-images/image-20230508120944447.png">
+<meta property="og:image" content="https://image.moguit.cn/526c3949bafe44a0815dc208f8540a0b">
+<meta property="og:image" content="https://image.moguit.cn/bc6bf35762524d70842612fb31cf2821">
+<meta property="og:image" content="https://image.moguit.cn/059a3e3af6af45bda01b5bfc760a2e27">
+<meta property="og:image" content="https://image.moguit.cn/c992f0cbe844449cab11afecf00f9edf">
+<meta property="og:image" content="http://example.com/2023/AppData/Roaming/Typora/typora-user-images/image-20230508190847212.png">
+<meta property="og:image" content="https://image.moguit.cn/8b546f7a10e5418fb938752a1b41effb">
+<meta property="og:image" content="https://image.moguit.cn/04d23c94415d47f994d40fdbfca449e9">
+<meta property="og:image" content="https://image.moguit.cn/0cab12cc6c6b4161bb6943641bf5a415">
+<meta property="og:image" content="https://image.moguit.cn/d1fae1d005f148b8be0725e5aec2d44e">
+<meta property="og:image" content="https://image.moguit.cn/a04eaf5aed6f434e9928fc3f8bfad78b">
+<meta property="og:image" content="https://image.moguit.cn/40550985eacc4816a9302aa8715a786d">
+<meta property="og:image" content="https://image.moguit.cn/c91690501f594fb0a004836a4e9f1fd3">
+<meta property="og:image" content="https://image.moguit.cn/6804a8a5490e4636a3fb0444a7cbe685">
+<meta property="og:image" content="https://image.moguit.cn/5e792bae44084551823b4fdae3ff9cfd">
+<meta property="og:image" content="https://image.moguit.cn/7d6678d7d3494a698a7d8323f97457a9">
+<meta property="og:image" content="https://image.moguit.cn/73e41a92ae1945fa81c9c62da1292f41">
+<meta property="og:image" content="https://image.moguit.cn/219e38c94edb4f009df3f02dc1c97e7e">
+<meta property="og:image" content="https://image.moguit.cn/9dbaa2a7756b496e99a264b0cbb8b29b">
+<meta property="og:image" content="https://image.moguit.cn/d7f8b4fdf34b4766a7b6808ac403fde3">
+<meta property="og:image" content="https://image.moguit.cn/37892597a5b94a9ca662c29e6cb2cc3f">
+<meta property="og:image" content="https://image.moguit.cn/07bb6009ddd04a71846d5f91899b9f5c">
+<meta property="og:image" content="https://image.moguit.cn/552f2083dbaa4f309e92480765c83f82">
+<meta property="og:image" content="https://image.moguit.cn/4b3b02b7f561487e8bbcb8e6498d3443">
+<meta property="og:image" content="https://image.moguit.cn/4e79dda200da4486bb7f0b074df0c964">
+<meta property="og:image" content="https://image.moguit.cn/dd620cafe1fb48cb9dce96c21dde8e50">
+<meta property="og:image" content="https://image.moguit.cn/64cc63af44664309a65119d50990a0bb">
+<meta property="og:image" content="https://image.moguit.cn/646e709a17834b6aa094be117a84f155">
+<meta property="og:image" content="https://image.moguit.cn/87c6f7a3b4d14c04bd56cb1aee85e60c">
+<meta property="og:image" content="http://image.moguit.cn/127bd25f08b749088895ea2b2664ff63">
+<meta property="og:image" content="http://image.moguit.cn/bc69f4382d664b0aa51b2660e5e38104">
+<meta property="og:image" content="http://example.com/2023/AppData/Roaming/Typora/typora-user-images/image-20230509220039488.png">
+<meta property="og:image" content="https://image.moguit.cn/8fd1dfd9995640b38dc04934f7571f32">
+<meta property="og:image" content="http://example.com/2023/AppData/Roaming/Typora/typora-user-images/image-20230509220737601.png">
+<meta property="og:image" content="http://example.com/2023/AppData/Roaming/Typora/typora-user-images/image-20230509220829669.png">
+<meta property="og:image" content="https://image.moguit.cn/5b984447fd3c4582ad66103c39579e4f">
+<meta property="og:image" content="http://example.com/2023/AppData/Roaming/Typora/typora-user-images/image-20230509222312726.png">
+<meta property="og:image" content="http://example.com/2023/AppData/Roaming/Typora/typora-user-images/image-20230509222529023.png">
+<meta property="og:image" content="http://example.com/2023/AppData/Roaming/Typora/typora-user-images/image-20230509222725555.png">
+<meta property="og:image" content="https://image.moguit.cn/e26853a3935f472eafd07c68e1c217a0">
+<meta property="og:image" content="https://image.moguit.cn/d5b6883b11e140f3b8617814e75667aa">
+<meta property="og:image" content="https://image.moguit.cn/76e966d3338c43b3920eb9dbad8220b8">
+<meta property="og:image" content="https://image.moguit.cn/3b4817c0085d413f9227d315fdf9ca05">
+<meta property="og:image" content="https://image.moguit.cn/8669b9b5e38744e2bba08039e05651fc">
+<meta property="og:image" content="https://image.moguit.cn/bb492efe1e4245469a1779f1af6670ed">
+<meta property="og:image" content="https://image.moguit.cn/145f4dfcbaf2421fbf997f54701faa8e">
+<meta property="og:image" content="https://image.moguit.cn/1b17e95b809541d68ef2bc341c2ea551">
+<meta property="og:image" content="https://image.moguit.cn/f86ee0f0440d4bcdad5a1fb085865371">
+<meta property="og:image" content="https://image.moguit.cn/f1126c7cba0146acb61dd8dff6abaa78">
+<meta property="og:image" content="https://image.moguit.cn/92b5a6060f99488dba4bc808f8a8ff40">
+<meta property="og:image" content="https://image.moguit.cn/ee1af26c7f164556b8131d483870908f">
+<meta property="og:image" content="https://image.moguit.cn/9333d30cca8d406d8de852d71649a799">
+<meta property="og:image" content="http://example.com/2023/AppData/Roaming/Typora/typora-user-images/image-20230510172910976.png">
+<meta property="og:image" content="https://image.moguit.cn/dd14a16901be4a899a77cd0f192b79d5">
+<meta property="og:image" content="https://image.moguit.cn/68e565eb5a4d4f618e3f62a8bd4191f5">
+<meta property="og:image" content="https://image.moguit.cn/cf724529d4c04f9ea4064dc6c088ea8b">
+<meta property="og:image" content="https://image.moguit.cn/6b260e7b92b1416da0ec37014dc7f7e3">
+<meta property="og:image" content="https://image.moguit.cn/dfda028dbb924ed58cb0b1a95637da1b">
+<meta property="og:image" content="https://image.moguit.cn/5585bb2b64eb4528970e244b46835d6a">
+<meta property="og:image" content="https://image.moguit.cn/0533a6c4af2c4a2da59fdecb54623780">
+<meta property="og:image" content="https://image.moguit.cn/7586a82ca34a4d7ca59cd1b262c663be">
+<meta property="og:image" content="https://image.moguit.cn/c81063d5dc684c4b9e06c7707c3e1200">
+<meta property="og:image" content="https://image.moguit.cn/a0bc661006244119af70fab4ae876f71">
+<meta property="og:image" content="https://image.moguit.cn/68b528d2d17a4aaca3550358d35380e7">
+<meta property="og:image" content="https://image.moguit.cn/5c542594ac9444b48043f4b23c2ec44c">
+<meta property="og:image" content="https://image.moguit.cn/42f3aad6f049435381badb4c052fe176">
+<meta property="og:image" content="https://image.moguit.cn/127776c15dce4bc185787acf451c9f59">
+<meta property="og:image" content="https://image.moguit.cn/7bbd145aeb3e47ffbf9ef6cd472a2cc7">
+<meta property="og:image" content="https://image.moguit.cn/827e304bf1194104a3e824a4ab9dc384">
+<meta property="og:image" content="https://image.moguit.cn/1d27507cd71e45aeb9a7bd66afe03115">
+<meta property="og:image" content="https://image.moguit.cn/810ab4da1ff94137a22e288b83ec76a0">
+<meta property="article:published_time" content="2023-05-16T02:07:05.000Z">
+<meta property="article:modified_time" content="2023-05-16T02:08:34.142Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.moguit.cn/b44585aa40234738847d4a0e9bfc8b45">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -150,16 +259,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-jvm" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-jvm" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2023/05/16/jvm/">jvm</a>
+    <h1 class="article-title" itemprop="name">
+      jvm
     </h1>
   
 
@@ -1072,6 +1179,27 @@
       
 
       
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
     </div>
     <div class="article-info article-info-index">
       
@@ -1079,16 +1207,75 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2023/05/16/jvm/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2023/05/16/jvm/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2023/05/06/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello World</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -1108,83 +1295,14 @@
 
 
 
-
   
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2023/05/06/hello-world/">Hello World</a>
-    </h1>
   
 
-        
-        <a href="/2023/05/06/hello-world/" class="archive-article-date">
-  	<time datetime="2023-05-06T02:50:53.385Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-05-06</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2023/05/06/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
+  
 
   
+
   
 
 
@@ -1207,8 +1325,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
